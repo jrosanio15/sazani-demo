@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Clothing by ID</title>
+
+    <script>
+        // Function to fetch clothing by ID
+        function fetchClothingById() {
+            // Get the ID from the input field
+            const clothingId = document.getElementById('clothingId').value;
+            
+            // Check if the ID is valid
+            if (!clothingId) {
+                alert("Please enter a clothing ID.");
+                return;
+            }
+
+            // Make an API call to fetch the clothing by ID
+            fetch(`http://localhost:8080/clothing/${clothingId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Pre-populate the form fields with the fetched clothing data
+                    document.getElementById('clothingDetails').innerHTML =
+                    document.getElementById('size').value = data.size;
+                    document.getElementById('bust').value = data.bust;
+                    document.getElementById('waist').value = data.waist;
+                    document.getElementById('hip').value = data.hip;
+                    document.getElementById('clothingIdToUpdate').value = data.id; // Keep ID hidden for the PUT request
+                })
+                .catch(error => {
+                    // Handle errors (e.g., 404 if the item is not found)
+                    document.getElementById('clothingDetails').innerHTML = '<p>Clothing not found or an error occurred.</p>';
+                    console.error('Error fetching clothing:', error);
+                });
+        }
+
+        function updateClothingById() {
+            const clothingId = document.getElementById('clothingId').value;
+
+            const updatedClothing = {
+                size: document.getElementById('size').value,
+                bust: document.getElementById('bust').value,
+                waist: document.getElementById('waist').value,
+                hip: document.getElementById('hip').value
+            };
+
+            fetch(`http://localhost:8080/clothing/${clothingId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedClothing)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Clothing updated successfully!');
+                } else {
+                    alert('Error updating clothing.');
+                }
+            })
+            .catch(error => {
+                alert('An error occurred while updating clothing.');
+                console.error('Error updating clothing:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h2>View and Update Clothing By ID</h2>
+
+    <label for="clothingId">Enter Clothing ID</label>
+    <input type="number" id="clothingId" placeholder="Enter ID">
+
+    <button onclick="fetchClothingById()">View Clothing</button>
+
+    <h2>Clothing Details</h2>
+    <div id="clothingDetails">
+        <!-- Clothing details will be shown here -->
+    </div>
+
+    <h2>Update Clothing</h2>
+    <form id="updateClothingForm" onsubmit="event.preventDefault(); updateClothingById();">
+        <label for="size">Size:</label>
+        <input type="text" id="size" name="size" required />
+
+        <label for="bust">Bust:</label>
+        <input type="number" id="bust" name="bust" required />
+
+        <label for="waist">Waist:</label>
+        <input type="number" id="waist" name="waist" required/>
+
+        <label for="hip">Hip:</label>
+        <input type="number" id="hip" name="hip" required/>
+
+        <!-- Hidden input to keep track of clothing ID for PUT request -->
+        <input type="hidden" id="clothingIdToUpdate" name="clothingIdToUpdate">
+
+        <button type="submit">Update Clothing</button>
+    </form>
+    
+</body>
+</html>
