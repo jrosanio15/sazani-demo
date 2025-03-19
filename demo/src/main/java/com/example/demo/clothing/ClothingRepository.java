@@ -1,6 +1,6 @@
 package com.example.demo.clothing;
 
-import com.example.demo.Clothing;
+// import com.example.demo.Clothing;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClothingRepository extends JpaRepository<Clothing, Long> {

@@ -1,13 +1,12 @@
 package com.example.demo.clothing;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-import java.util.List;
-import com.example.demo.Clothing;
+//import com.example.demo.Clothing;
 
 @RestController
 @RequestMapping("/clothing")

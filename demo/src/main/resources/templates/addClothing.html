@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Clothing</title>
+
+</head>
+<body>
+    <h2>Add New Clothing Pieces</h2>
+    <form th:action="@{/clothing}" method="post">
+        <label for="size">Size:</label>
+        <input type="text" id="size" name="size" required />
+
+        <label for="bust">Bust:</label>
+        <input type="number" id="bust" name="bust" required />
+
+        <label for="waist">Waist:</label>
+        <input type="number" id="waist" name="waist" required/>
+
+        <label for="hip">Hip:</label>
+        <input type="number" id="hip" name="hip" required/>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("clothingForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevents the default page reload on form submission
+
+            const formData = {
+                size: document.getElementById("size").value,
+                bust: document.getElementById("bust").value,
+                waist: document.getElementById("waist").value,
+                hip: document.getElementById("hip").value
+            };
+
+            fetch("http://localhost:8080/clothing", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData) // Convert JavaScript object to JSON string
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("Clothing added successfully: " + JSON.stringify(data));
+                document.getElementById("clothingForm").reset(); // Clear form after submission
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error adding clothing. Check console for details.");
+            });
+        });
+    </script>
+</body>
+</html>
