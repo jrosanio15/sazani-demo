@@ -9,7 +9,8 @@
 </head>
 <body>
     <h2>Add New Clothing Pieces</h2>
-    <form th:action="@{/clothing}" method="post">
+    <!-- <form th:action="@{/clothing}" method="post"></form> -->
+    <form id="clothingForm" method="post">
         <label for="size">Size:</label>
         <input type="text" id="size" name="size" required />
 

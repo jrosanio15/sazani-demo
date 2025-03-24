@@ -16,5 +16,15 @@ public class webController {
     public String addClothing() {
         return "addClothing";
     }
+
+    @GetMapping("/clothingID")
+    public String clothingID() {
+        return "clothingID";
+    }
+
+    @GetMapping("/viewClothing")
+    public String viewClothing() {
+        return "viewClothing";
+    }
     
 }

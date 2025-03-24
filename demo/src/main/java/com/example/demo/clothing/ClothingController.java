@@ -45,4 +45,26 @@ public class ClothingController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Clothing not found with ID: " + id);
         }
     }
+
+    @PutMapping("/clothing/{id}")
+    public ResponseEntity<String> updateClothing(@PathVariable Long id, @RequestBody Clothing updatedClothing) {
+        // Try to find the clothing by ID
+        Clothing existingClothing = clothingRepository.findById(id).orElse(null);
+        
+        // Check if the clothing exists
+        if (existingClothing == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        // Update the clothing details
+        existingClothing.setSize(updatedClothing.getSize());
+        existingClothing.setBust(updatedClothing.getBust());
+        existingClothing.setWaist(updatedClothing.getWaist());
+        existingClothing.setHip(updatedClothing.getHip());
+
+        // Save the updated clothing item
+        clothingRepository.save(existingClothing);
+
+        return ResponseEntity.ok("Clothing updated successfully.");
+    }
 }
